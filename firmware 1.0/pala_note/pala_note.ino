@@ -40,6 +40,7 @@ extern "C" {
 #include "src/app/ui.h"
 #include "src/app/buttons.h"
 #include "src/app/network.h"
+#include "src/app/todoist.h"
 #include "src/app/sleep.h"
 #include "src/app/record.h"
 
@@ -142,6 +143,7 @@ void startSyncFlow() {
     syncTimeFromNTP(6000);
     transcribeAll();
     loadIndex();
+    syncTodoistAll();
     WiFi.disconnect(true);
     showDone();
     soundSuccess();
