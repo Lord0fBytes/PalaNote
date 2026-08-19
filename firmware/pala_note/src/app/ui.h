@@ -38,6 +38,7 @@ void showBatteryLow(int pct);
 void showRecording();
 void showSaved(int num);
 void showTagSelect(int cursor);
+void showDiscardConfirm(int noteNum);
 void showMenu(int cursor);
 void showTagBrowser(int cursor);
 void showNoteList(int cursor);

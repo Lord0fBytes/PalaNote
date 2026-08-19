@@ -305,6 +305,26 @@ void showTagSelect(int cursor) {
     int y = y0 + i*(h+gap);
     drawModernPill(x, y, w, h, tags[i], i == cursor);
   }
+  drawStrC(W/2, 184, "hold REC to discard", 1, BLACK);
+  refresh();
+}
+
+void showDiscardConfirm(int noteNum) {
+  clearWhite();
+  fillRect(0, 0, W, 28, BLACK);
+  drawStrC(W/2, 10, "DISCARD", 1, WHITE);
+  char label[16]; snprintf(label, sizeof(label), "#%03d", noteNum);
+  drawStrC(W/2, 52, label, 2, BLACK);
+  drawStrC(W/2, 82, "Discard recording?", 1, BLACK);
+  drawStrC(W/2, 102, "This cannot be undone", 1, BLACK);
+
+  hline(76, 126, W - 76, BLACK);
+  const char* confirmLabel = "confirm  >";
+  drawStr(W - 8 - textW(confirmLabel, 1), 137, confirmLabel, 1, BLACK);
+
+  hline(76, 160, W - 76, BLACK);
+  const char* cancelLabel = "cancel   >";
+  drawStr(W - 8 - textW(cancelLabel, 1), 171, cancelLabel, 1, BLACK);
   refresh();
 }
 

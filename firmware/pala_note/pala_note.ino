@@ -303,6 +303,7 @@ void loop() {
       case STATE_NOTE_LIST:      showNoteList(listCursor);       break;
       case STATE_NOTE_DETAIL:    showNoteDetail(listCursor);     break;
       case STATE_TAG_SELECT:     showTagSelect(tagCursor);       break;
+      case STATE_DISCARD_CONFIRM: showDiscardConfirm(lastRecNum); break;
       case STATE_TAG_BROWSER:    showTagBrowser(tagCursor);      break;
       case STATE_SETTINGS:       showSettings(settingsCursor);   break;
       case STATE_DEVICE_INFO:    showDeviceInfo();               break;
@@ -349,13 +350,37 @@ void loop() {
     ButtonEvent rec = readButtonEvent(BTN_REC);
     ButtonEvent pwr = readButtonEvent(BTN_PWR);
 
-    if (rec == EV_SINGLE || rec == EV_LONG) {
+    if (rec == EV_SINGLE) {
       soundSelect();
       saveTag(lastRecNum, tags[constrain(tagCursor, 0, max(tagCount - 1, 0))]);
       enterUltraSleep();
+    } else if (rec == EV_LONG) {
+      soundBack();
+      state = STATE_DISCARD_CONFIRM;
+      showDiscardConfirm(lastRecNum);
     } else if (pwr == EV_SINGLE) {
       soundNext();
       if (tagCount > 0) tagCursor = (tagCursor + 1) % tagCount;
+      showTagSelect(tagCursor);
+    }
+  }
+
+  // DISCARD CONFIRM after recording ─────────────────────────────────────
+  else if (state == STATE_DISCARD_CONFIRM) {
+    ButtonEvent rec = readButtonEvent(BTN_REC);
+    ButtonEvent pwr = readButtonEvent(BTN_PWR);
+
+    if (rec == EV_SINGLE) {
+      Serial.printf("[Rec] discarding note #%03d\n", lastRecNum);
+      deleteNote(lastRecNum);
+      lastRecNum = -1;
+      soundDelete();
+      resetActivity();
+      state = STATE_IDLE;
+      showIdle();
+    } else if (pwr == EV_SINGLE || rec == EV_DOUBLE || rec == EV_LONG) {
+      soundBack();
+      state = STATE_TAG_SELECT;
       showTagSelect(tagCursor);
     }
   }
