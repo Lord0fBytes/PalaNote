@@ -14,6 +14,12 @@ extern "C" {
 
 void resetActivity() {
   lastActivityMs = millis();
+  inactivityTimeoutMs = ULTRA_SLEEP_MS;
+}
+
+void resetPostTagActivity() {
+  lastActivityMs = millis();
+  inactivityTimeoutMs = POST_TAG_SLEEP_MS;
 }
 
 void enterUltraSleep() {

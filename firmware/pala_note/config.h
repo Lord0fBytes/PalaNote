@@ -64,11 +64,16 @@
 #define TAG_DEFAULTS_REVISION "2"
 #define MAX_TAGS   20
 
+/* Todoist labels */
+#define TODOIST_LABELS_ENABLED 1
+#define TODOIST_LABEL_PREFIX   "pala"
+
 /* UI timing */
 #define REC_HOLD_MS         350
 #define BTN_LONG_MS         600
 #define DOUBLE_MS           200
 #define ULTRA_SLEEP_MS      120000UL
+#define POST_TAG_SLEEP_MS    15000UL
 #define TICKER_INTERVAL_MS  950
 
 /* Battery warning */
@@ -78,7 +83,6 @@
 
 /* Time & firmware */
 #define LOCAL_TIME_OFFSET_MIN -480   // Pacific Standard Time (UTC-8). Washington observes UTC-7 during daylight saving time.
-#define FIRMWARE_VERSION       "v1.1.1"
-#define FW_VERSION             "v1.1.1"
+#define FIRMWARE_VERSION       "v1.1.2"
 
 #endif // CONFIG_H

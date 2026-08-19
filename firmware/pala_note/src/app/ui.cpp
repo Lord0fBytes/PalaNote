@@ -298,13 +298,37 @@ void showTagSelect(int cursor) {
     return;
   }
   drawKicker("choose tag", 17);
-  const int x = 36, w = 128, h = 21, gap = 7;
-  int y0 = 40;
+  const int x = 36, w = 128, h = 21, gap = 4;
+  int y0 = 38;
   cursor = constrain(cursor, 0, max(tagCount - 1, 0));
-  for (int i=0; i<tagCount; i++) {
+  const int visibleTags = 5;
+  int firstTag = constrain(cursor - visibleTags + 1, 0, max(tagCount - visibleTags, 0));
+  int rows = min(tagCount, visibleTags);
+  for (int i=0; i<rows; i++) {
+    int tagIndex = firstTag + i;
     int y = y0 + i*(h+gap);
-    drawModernPill(x, y, w, h, tags[i], i == cursor);
+    drawModernPill(x, y, w, h, tags[tagIndex], tagIndex == cursor);
   }
+  drawStrC(W/2, 184, "hold REC: discard", 1, BLACK);
+  refresh();
+}
+
+void showDiscardConfirm(int noteNum) {
+  clearWhite();
+  fillRect(0, 0, W, 28, BLACK);
+  drawStrC(W/2, 10, "DISCARD", 1, WHITE);
+  char label[16]; snprintf(label, sizeof(label), "#%03d", noteNum);
+  drawStrC(W/2, 52, label, 2, BLACK);
+  drawStrC(W/2, 82, "Discard recording?", 1, BLACK);
+  drawStrC(W/2, 102, "This cannot be undone", 1, BLACK);
+
+  hline(76, 126, W - 76, BLACK);
+  const char* confirmLabel = "confirm  >";
+  drawStr(W - 8 - textW(confirmLabel, 1), 137, confirmLabel, 1, BLACK);
+
+  hline(76, 160, W - 76, BLACK);
+  const char* cancelLabel = "cancel   >";
+  drawStr(W - 8 - textW(cancelLabel, 1), 171, cancelLabel, 1, BLACK);
   refresh();
 }
 
@@ -421,13 +445,16 @@ void showDeleteConfirm(int noteNum) {
   drawStrC(W/2, 10, "DELETE", 1, WHITE);
   char label[16]; snprintf(label, sizeof(label), "#%03d", noteNum);
   drawStrC(W/2, 52, label, 2, BLACK);
-  drawStrC(W/2, 88, "Delete this note?", 1, BLACK);
-  drawStrC(W/2, 108, "WAV + TXT + meta", 1, BLACK);
-  hline(0, 179, W, BLACK);
-  fillRect(0, 180, W, 20, WHITE);
-  drawStr(8, 186, "confirm", 1, BLACK);
-  int rw = textW("cancel", 1);
-  drawStr(W - 8 - rw, 186, "cancel", 1, BLACK);
+  drawStrC(W/2, 82, "Delete this note?", 1, BLACK);
+  drawStrC(W/2, 102, "WAV + TXT + meta", 1, BLACK);
+
+  hline(76, 126, W - 76, BLACK);
+  const char* confirmLabel = "confirm  >";
+  drawStr(W - 8 - textW(confirmLabel, 1), 137, confirmLabel, 1, BLACK);
+
+  hline(76, 160, W - 76, BLACK);
+  const char* cancelLabel = "cancel   >";
+  drawStr(W - 8 - textW(cancelLabel, 1), 171, cancelLabel, 1, BLACK);
   refresh();
 }
 
