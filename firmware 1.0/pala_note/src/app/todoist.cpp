@@ -29,7 +29,7 @@ static String jsonEscape(const String& input) {
 }
 
 static String formEncode(const String& input) {
-  static const char HEX[] = "0123456789ABCDEF";
+  static const char HEX_DIGITS[] = "0123456789ABCDEF";
   String out;
   out.reserve(input.length() * 2);
   for (size_t i = 0; i < input.length(); i++) {
@@ -39,8 +39,8 @@ static String formEncode(const String& input) {
       out += (char)c;
     } else {
       out += '%';
-      out += HEX[c >> 4];
-      out += HEX[c & 0x0F];
+      out += HEX_DIGITS[c >> 4];
+      out += HEX_DIGITS[c & 0x0F];
     }
   }
   return out;
