@@ -19,7 +19,7 @@ Current firmware version: **v1.1.0**
 
 ## Repository layout
 
-- `firmware 1.0/pala_note/` - ESP32-S3 Arduino firmware
+- `firmware/pala_note/` - ESP32-S3 Arduino firmware
 - `case V1.0/` - printable enclosure files and STEP assembly
 - `TODOIST_SETUP.md` - Todoist integration setup and behavior
 - `AGENTS.md` - project working and credential-safety instructions
@@ -30,7 +30,7 @@ through this repository.
 ## Arduino setup
 
 1. Install **esp32 by Espressif Systems** through Arduino Boards Manager.
-2. Open `firmware 1.0/pala_note/pala_note.ino`.
+2. Open `firmware/pala_note/pala_note.ino`.
 3. Select **ESP32S3 Dev Module**.
 4. Set **USB CDC On Boot** to **Enabled** for Serial Monitor output.
 5. Use a Serial Monitor speed of **115200 baud**.
