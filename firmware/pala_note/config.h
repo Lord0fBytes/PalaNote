@@ -61,7 +61,7 @@
 #define INDEX_FILE "/notes/index.csv"
 #define TAG_FILE   "/notes/tags.txt"
 #define TAG_DEFAULTS_REV_FILE "/notes/tags.defaults"
-#define TAG_DEFAULTS_REVISION "1"
+#define TAG_DEFAULTS_REVISION "2"
 #define MAX_TAGS   20
 
 /* UI timing */

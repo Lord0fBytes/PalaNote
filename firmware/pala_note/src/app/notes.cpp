@@ -134,27 +134,48 @@ static bool saveDefaultTagsRevision() {
 static void migrateDefaultTagsOnce() {
   if (defaultTagsAreCurrent()) return;
 
+  char existingTags[MAX_TAGS][32];
+  int existingCount = tagCount;
+  for (int i = 0; i < existingCount; i++) {
+    strncpy(existingTags[i], tags[i], 31);
+    existingTags[i][31] = 0;
+  }
+
+  tagCount = 0;
   int added = 0;
   for (int d = 0; d < DEFAULT_TAG_COUNT && tagCount < MAX_TAGS; d++) {
     bool exists = false;
-    for (int i = 0; i < tagCount; i++) {
-      if (strcasecmp(tags[i], DEFAULT_TAGS[d]) == 0) {
+    for (int i = 0; i < existingCount; i++) {
+      if (strcasecmp(existingTags[i], DEFAULT_TAGS[d]) == 0) {
         exists = true;
         break;
       }
     }
-    if (exists) continue;
+    if (!exists) added++;
     strncpy(tags[tagCount], DEFAULT_TAGS[d], 31);
     tags[tagCount][31] = 0;
     tagCount++;
-    added++;
   }
 
-  if (added > 0) saveTagsToFile();
+  for (int i = 0; i < existingCount && tagCount < MAX_TAGS; i++) {
+    bool isDefault = false;
+    for (int d = 0; d < DEFAULT_TAG_COUNT; d++) {
+      if (strcasecmp(existingTags[i], DEFAULT_TAGS[d]) == 0) {
+        isDefault = true;
+        break;
+      }
+    }
+    if (isDefault) continue;
+    strncpy(tags[tagCount], existingTags[i], 31);
+    tags[tagCount][31] = 0;
+    tagCount++;
+  }
+
+  saveTagsToFile();
   if (!saveDefaultTagsRevision()) {
     Serial.println("[Tags] could not save defaults revision; migration will retry");
   }
-  Serial.printf("[Tags] defaults migration: %d added, %d total\n", added, tagCount);
+  Serial.printf("[Tags] defaults migration: reordered, %d added, %d total\n", added, tagCount);
 }
 
 void loadTags() {

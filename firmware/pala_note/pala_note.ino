@@ -47,7 +47,7 @@ extern "C" {
 // All pin, timing, path and threshold constants live in config.h.
 
 // ─── Content arrays ───────────────────────────────────────────────────────
-const char* DEFAULT_TAGS[]    = { "Private", "Work", "TODO", "Buy", "Idea" };
+const char* DEFAULT_TAGS[]    = { "TODO", "Buy", "Idea", "Private", "Work" };
 const char* MENU_ITEMS[]     = { "Notes", "Tags", "Sync", "Settings" };
 const char* SETTINGS_ITEMS[] = { "Sounds", "Transfer", "Device" };
 
