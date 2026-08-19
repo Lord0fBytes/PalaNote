@@ -353,7 +353,10 @@ void loop() {
     if (rec == EV_SINGLE) {
       soundSelect();
       saveTag(lastRecNum, tags[constrain(tagCursor, 0, max(tagCount - 1, 0))]);
-      enterUltraSleep();
+      Serial.printf("[Rec] note #%03d tagged; returning to idle\n", lastRecNum);
+      resetActivity();
+      state = STATE_IDLE;
+      showIdle();
     } else if (rec == EV_LONG) {
       soundBack();
       state = STATE_DISCARD_CONFIRM;
