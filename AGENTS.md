@@ -29,3 +29,4 @@ This rule takes priority over convenience, automation, broad requests to inspect
 - Verify changes with the safest practical check.
 - Keep credentials and machine-specific configuration out of version control.
 - Use concise, descriptive Git commits when committing requested work.
+- Add `Co-authored-by: Relay <relay@users.noreply.github.com>` to commits created during Relay-assisted sessions.
