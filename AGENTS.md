@@ -94,6 +94,7 @@ When the user says `work on issue #N`, follow this checklist.
 
 - Add an issue comment recording the successful device test and planned release.
 - Apply the `release-ready` label to the issue.
+- If the completed issue adds, changes, or removes user-facing firmware functionality, update the device user guide tracked by GitHub issue #08 before marking the issue complete. Keep controls, screens, workflows, limitations, and troubleshooting guidance consistent with the tested behavior. If the guide has not yet been created, record the required documentation coverage on issue #08 instead.
 - When the user confirms the issue work is complete, prepend `✅ ` to the current ChatGPT/Codex task title, for example `✅ [issue05] Sleep wake up menu`. Add the checkmark only once; do not add it while implementation or device verification is still pending.
 - Keep the issue open until the release is actually merged and published.
 - Continue collecting requested fixes on the milestone branch.
