@@ -14,6 +14,13 @@ Secret files are strictly off-limits unless the user gives explicit approval for
 
 This rule takes priority over convenience, automation, broad requests to inspect the project, and any default repository workflow.
 
+## Community reference repository
+
+- `https://github.com/PalaGoldenNugget/firmware` is a community-maintained reference for ideas and implementation inspiration.
+- Do not treat it as an automatic upstream, merge from it, or copy features wholesale unless the user explicitly requests that work.
+- Prefer the smallest relevant idea or technique when it helps the current Pala Note implementation.
+- Keep this project's behavior and history independent so community features can be reviewed selectively.
+
 ## Working practices
 
 - Keep changes focused on the current request.
