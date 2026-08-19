@@ -484,6 +484,7 @@ void showUltraSleepScreen() {
   #else
     drawProductWordmark(100, 70, BLACK);
   #endif
+  drawStrC(100, 180, FIRMWARE_VERSION, 1, BLACK);
   refresh();
 }
 
@@ -516,6 +517,7 @@ void showTransferMode(const char* ip) {
 void showSettings(int cursor) {
   clearWhite();
   drawStr(16, 14, "settings", 1, BLACK);
+  drawStrFit(132, 14, 52, FIRMWARE_VERSION, 1, BLACK);
   hline(16, 32, W-32, BLACK);
   const int y0 = 46, step = 44;
   for (int row = 0; row < SETTINGS_COUNT; row++) {

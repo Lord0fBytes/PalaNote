@@ -41,8 +41,13 @@ static String parseWhisperText(const String& resp) {
 
 static bool transcribeOnce(const String& wavPath, int noteNum) {
   File f = SD_MMC.open(wavPath.c_str());
-  if (!f) return false;
+  if (!f) {
+    Serial.printf("[Whisper] note #%d: could not open %s\n", noteNum, wavPath.c_str());
+    return false;
+  }
   size_t fileSize = f.size();
+  Serial.printf("[Whisper] note #%d: preparing %u-byte upload\n",
+                noteNum, (unsigned)fileSize);
 
   String bnd = "----PalaBoundary";
   String pre = "--" + bnd + "\r\nContent-Disposition: form-data; name=\"model\"\r\n\r\nwhisper-1\r\n"
@@ -54,7 +59,12 @@ static bool transcribeOnce(const String& wavPath, int noteNum) {
   client.setInsecure();  // TODO: pin api.openai.com cert for production use
   client.setTimeout(90);
 
-  if (!client.connect("api.openai.com", 443)) { f.close(); return false; }
+  Serial.printf("[Whisper] note #%d: connecting to api.openai.com\n", noteNum);
+  if (!client.connect("api.openai.com", 443)) {
+    Serial.printf("[Whisper] note #%d: TLS connection failed\n", noteNum);
+    f.close();
+    return false;
+  }
 
   client.printf("POST /v1/audio/transcriptions HTTP/1.1\r\n"
                 "Host: api.openai.com\r\n"
@@ -66,15 +76,28 @@ static bool transcribeOnce(const String& wavPath, int noteNum) {
   client.print(pre);
 
   uint8_t* chunk = (uint8_t*)heap_caps_malloc(4096, MALLOC_CAP_8BIT);
-  if (!chunk) { f.close(); client.stop(); return false; }
+  if (!chunk) {
+    Serial.printf("[Whisper] note #%d: upload buffer allocation failed\n", noteNum);
+    f.close(); client.stop(); return false;
+  }
+  size_t uploaded = 0;
+  size_t nextProgress = 256 * 1024;
   while (f.available()) {
     int n = f.read(chunk, 4096);
     if (n <= 0) break;
     client.write(chunk, n);
+    uploaded += n;
+    if (uploaded >= nextProgress) {
+      Serial.printf("[Whisper] note #%d: uploaded %u/%u bytes\n",
+                    noteNum, (unsigned)uploaded, (unsigned)fileSize);
+      nextProgress += 256 * 1024;
+    }
   }
   heap_caps_free(chunk);
   f.close();
   client.print(post);
+  Serial.printf("[Whisper] note #%d: upload complete (%u bytes), waiting for response\n",
+                noteNum, (unsigned)uploaded);
 
   uint32_t deadline = millis() + 90000;
   while (!client.available() && millis() < deadline) delay(20);
@@ -87,7 +110,8 @@ static bool transcribeOnce(const String& wavPath, int noteNum) {
     if (!inBody) {
       if (line == "\r" || line == "") inBody = true;
       if (line.startsWith("HTTP/") && line.indexOf(" 200 ") < 0) {
-        Serial.printf("[Whisper] %s\n", line.c_str());
+        line.trim();
+        Serial.printf("[Whisper] note #%d: %s\n", noteNum, line.c_str());
         client.stop(); return false;
       }
     } else {
@@ -98,34 +122,57 @@ static bool transcribeOnce(const String& wavPath, int noteNum) {
   client.stop();
 
   String text = parseWhisperText(resp);
-  if (text.length() == 0) { Serial.println("[Whisper] empty response"); return false; }
+  if (text.length() == 0) {
+    Serial.printf("[Whisper] note #%d: empty or unreadable response (%u bytes)\n",
+                  noteNum, (unsigned)resp.length());
+    return false;
+  }
 
   String tp = wavPath; tp.replace(".wav", ".txt");
   File tf = SD_MMC.open(tp.c_str(), FILE_WRITE);
   if (tf) { tf.print(text); tf.close(); }
 
   updateIndexHasText(noteNum);
+  Serial.printf("[Whisper] note #%d: transcript saved (%u characters)\n",
+                noteNum, (unsigned)text.length());
   return true;
 }
 
 bool transcribe(const String& wavPath, int noteNum) {
   for (int attempt = 0; attempt < 3; attempt++) {
+    Serial.printf("[Whisper] note #%d: attempt %d/3\n", noteNum, attempt + 1);
     if (transcribeOnce(wavPath, noteNum)) return true;
-    if (attempt < 2) { Serial.printf("[Whisper] retry %d/2\n", attempt + 1); delay(3000); }
+    if (attempt < 2) {
+      Serial.printf("[Whisper] note #%d: retrying in 3 seconds\n", noteNum);
+      delay(3000);
+    }
   }
+  Serial.printf("[Whisper] note #%d: failed after 3 attempts\n", noteNum);
   return false;
 }
 
 void transcribeAll() {
   int pending = 0;
   for (int i=0; i<(int)noteIndex.size(); i++) if(!noteIndex[i].hasText) pending++;
+  Serial.printf("[Whisper] pass starting: %d note(s) pending\n", pending);
+  if (pending == 0) {
+    Serial.println("[Whisper] pass complete: nothing to transcribe");
+    return;
+  }
   int done = 0;
+  int failed = 0;
+  int current = 0;
   for (int i=0; i<(int)noteIndex.size(); i++) {
     if (noteIndex[i].hasText) continue;
+    current++;
+    Serial.printf("[Whisper] processing %d/%d: note #%d\n",
+                  current, pending, noteIndex[i].num);
     showTranscribing(done, pending);
     char wp[64]; snprintf(wp, sizeof(wp), "%s/note_%03d.wav", NOTES_DIR, noteIndex[i].num);
     if (transcribe(String(wp), noteIndex[i].num)) done++;
+    else failed++;
   }
+  Serial.printf("[Whisper] pass complete: %d succeeded, %d failed\n", done, failed);
 }
 
 // ─── Portal helpers ────────────────────────────────────────────────────────

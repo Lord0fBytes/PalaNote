@@ -76,7 +76,7 @@
 
 /* Time & firmware */
 #define LOCAL_TIME_OFFSET_MIN -480   // Pacific Standard Time (UTC-8). Washington observes UTC-7 during daylight saving time.
-#define FIRMWARE_VERSION       "v1.0"
-#define FW_VERSION             "v1.0"
+#define FIRMWARE_VERSION       "v1.1.0"
+#define FW_VERSION             "v1.1.0"
 
 #endif // CONFIG_H
