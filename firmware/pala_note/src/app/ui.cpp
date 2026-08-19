@@ -301,9 +301,13 @@ void showTagSelect(int cursor) {
   const int x = 36, w = 128, h = 21, gap = 4;
   int y0 = 38;
   cursor = constrain(cursor, 0, max(tagCount - 1, 0));
-  for (int i=0; i<tagCount; i++) {
+  const int visibleTags = 5;
+  int firstTag = constrain(cursor - visibleTags + 1, 0, max(tagCount - visibleTags, 0));
+  int rows = min(tagCount, visibleTags);
+  for (int i=0; i<rows; i++) {
+    int tagIndex = firstTag + i;
     int y = y0 + i*(h+gap);
-    drawModernPill(x, y, w, h, tags[i], i == cursor);
+    drawModernPill(x, y, w, h, tags[tagIndex], tagIndex == cursor);
   }
   drawStrC(W/2, 184, "hold REC: discard", 1, BLACK);
   refresh();
