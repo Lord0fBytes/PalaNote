@@ -11,6 +11,7 @@ bool isDown(int pin) { return digitalRead(pin) == LOW; }
 
 ButtonEvent readButtonEvent(int pin) {
   static bool pwrReady = true;
+  static bool recReady = true;
 
   if (pin == BTN_PWR) {
     if (!isDown(BTN_PWR)) { pwrReady = true; return EV_NONE; }
@@ -22,14 +23,15 @@ ButtonEvent readButtonEvent(int pin) {
     return EV_SINGLE;
   }
 
-  if (!isDown(pin)) return EV_NONE;
+  if (!isDown(pin)) { recReady = true; return EV_NONE; }
   delay(6);
   if (!isDown(pin)) return EV_NONE;
+  if (!recReady) return EV_NONE;
+  recReady = false;
 
   uint32_t t0 = millis();
   while (isDown(pin)) {
     if (millis() - t0 > BTN_LONG_MS) {
-      while (isDown(pin)) delay(3);
       resetActivity();
       return EV_LONG;
     }
