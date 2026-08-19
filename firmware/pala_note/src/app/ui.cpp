@@ -421,13 +421,16 @@ void showDeleteConfirm(int noteNum) {
   drawStrC(W/2, 10, "DELETE", 1, WHITE);
   char label[16]; snprintf(label, sizeof(label), "#%03d", noteNum);
   drawStrC(W/2, 52, label, 2, BLACK);
-  drawStrC(W/2, 88, "Delete this note?", 1, BLACK);
-  drawStrC(W/2, 108, "WAV + TXT + meta", 1, BLACK);
-  hline(0, 179, W, BLACK);
-  fillRect(0, 180, W, 20, WHITE);
-  drawStr(8, 186, "confirm", 1, BLACK);
-  int rw = textW("cancel", 1);
-  drawStr(W - 8 - rw, 186, "cancel", 1, BLACK);
+  drawStrC(W/2, 82, "Delete this note?", 1, BLACK);
+  drawStrC(W/2, 102, "WAV + TXT + meta", 1, BLACK);
+
+  hline(76, 126, W - 76, BLACK);
+  const char* confirmLabel = "confirm  >";
+  drawStr(W - 8 - textW(confirmLabel, 1), 137, confirmLabel, 1, BLACK);
+
+  hline(76, 160, W - 76, BLACK);
+  const char* cancelLabel = "cancel   >";
+  drawStr(W - 8 - textW(cancelLabel, 1), 171, cancelLabel, 1, BLACK);
   refresh();
 }
 
