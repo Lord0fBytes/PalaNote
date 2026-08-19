@@ -79,8 +79,12 @@ static bool createTodoistTask(const NoteEntry& note) {
   Serial.println("[Todoist] TODOIST_API_KEY is not configured");
   return false;
 #else
+  Serial.printf("[Todoist] note #%d: preparing task\n", note.num);
   String transcript = readTranscript(note.num);
-  if (transcript.length() == 0) return false;
+  if (transcript.length() == 0) {
+    Serial.printf("[Todoist] note #%d: transcript is missing or empty\n", note.num);
+    return false;
+  }
 
   String title = transcript;
   title.replace("\n", " ");
@@ -102,7 +106,10 @@ static bool createTodoistTask(const NoteEntry& note) {
   WiFiClientSecure client;
   client.setInsecure();  // TODO: install or pin Todoist's CA certificate.
   HTTPClient http;
-  if (!http.begin(client, "https://api.todoist.com/api/v1/sync")) return false;
+  if (!http.begin(client, "https://api.todoist.com/api/v1/sync")) {
+    Serial.printf("[Todoist] note #%d: could not initialize HTTPS request\n", note.num);
+    return false;
+  }
   http.setTimeout(30000);
   http.addHeader("Authorization", "Bearer " + String(TODOIST_API_KEY));
   http.addHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -114,15 +121,19 @@ static bool createTodoistTask(const NoteEntry& note) {
   const bool accepted = status == 200 &&
                         response.indexOf("\"" + uuid + "\":\"ok\"") >= 0;
   if (!accepted) {
-    Serial.printf("[Todoist] note %d failed (HTTP %d)\n", note.num, status);
+    Serial.printf("[Todoist] note #%d: rejected or unreadable response (HTTP %d, %u bytes)\n",
+                  note.num, status, (unsigned)response.length());
     return false;
   }
 
   File marker = SD_MMC.open(notePath(note.num, "todoist").c_str(), FILE_WRITE);
-  if (!marker) return false;
+  if (!marker) {
+    Serial.printf("[Todoist] note #%d: task created but local marker write failed\n", note.num);
+    return false;
+  }
   marker.println("synced=1");
   marker.close();
-  Serial.printf("[Todoist] note %d synced\n", note.num);
+  Serial.printf("[Todoist] note #%d: task created and marked synced\n", note.num);
   return true;
 #endif
 }
@@ -131,11 +142,25 @@ void syncTodoistAll() {
 #ifndef TODOIST_API_KEY
   Serial.println("[Todoist] skipped; add TODOIST_API_KEY to the local secrets configuration");
 #else
+  int eligible = 0;
+  int skipped = 0;
+  int succeeded = 0;
+  int failed = 0;
+  for (int i = 0; i < (int)noteIndex.size(); i++) {
+    const NoteEntry& note = noteIndex[i];
+    if (!note.hasText) continue;
+    if (SD_MMC.exists(notePath(note.num, "todoist").c_str())) skipped++;
+    else eligible++;
+  }
+  Serial.printf("[Todoist] pass starting: %d eligible, %d already synced\n", eligible, skipped);
   for (int i = 0; i < (int)noteIndex.size(); i++) {
     const NoteEntry& note = noteIndex[i];
     if (!note.hasText) continue;
     if (SD_MMC.exists(notePath(note.num, "todoist").c_str())) continue;
-    createTodoistTask(note);
+    if (createTodoistTask(note)) succeeded++;
+    else failed++;
   }
+  Serial.printf("[Todoist] pass complete: %d succeeded, %d failed, %d previously synced\n",
+                succeeded, failed, skipped);
 #endif
 }

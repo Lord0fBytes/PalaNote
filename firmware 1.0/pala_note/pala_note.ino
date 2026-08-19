@@ -130,25 +130,37 @@ void startRecordFlow() {
 
 void startSyncFlow() {
   const int MAX_TRIES = 20;
+  Serial.println("[Sync] starting");
+  Serial.println("[WiFi] connecting");
   showWifiConnecting(0, MAX_TRIES);
 
   WiFi.begin(WIFI_SSID, WIFI_PASS);
   int tries = 0;
   while (WiFi.status() != WL_CONNECTED && tries < MAX_TRIES) {
     delay(500); tries++;
+    if (tries == 1 || tries % 5 == 0) Serial.printf("[WiFi] attempt %d/%d\n", tries, MAX_TRIES);
     showWifiConnecting(tries, MAX_TRIES);
   }
 
   if (WiFi.status() == WL_CONNECTED) {
+    Serial.printf("[WiFi] connected, IP %s, RSSI %d dBm\n",
+                  WiFi.localIP().toString().c_str(), WiFi.RSSI());
+    Serial.println("[Sync] updating clock");
     syncTimeFromNTP(6000);
+    Serial.println("[Sync] starting OpenAI transcription pass");
     transcribeAll();
     loadIndex();
+    Serial.println("[Sync] starting Todoist delivery pass");
     syncTodoistAll();
+    Serial.println("[Sync] disconnecting WiFi");
     WiFi.disconnect(true);
+    Serial.println("[Sync] finished");
     showDone();
     soundSuccess();
     delay(1600);
   } else {
+    Serial.printf("[WiFi] connection failed after %d attempts\n", tries);
+    Serial.println("[Sync] stopped: no WiFi");
     showError("NO WIFI");
     delay(1800);
   }
