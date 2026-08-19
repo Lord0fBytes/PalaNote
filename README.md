@@ -6,6 +6,10 @@ and provides an on-device note browser and local transfer portal.
 
 Firmware version on this branch: **v1.1.2 (unreleased)**
 
+For setup, controls, recording, Sync, Transfer, storage, and troubleshooting,
+see the complete [Pala Note device guide](docs/DEVICE_GUIDE.md). Todoist-specific
+configuration is documented in [Todoist sync setup](TODOIST_SETUP.md).
+
 ## Features
 
 - Two-button voice-note recording workflow
@@ -45,7 +49,8 @@ Copy the definitions shown in `secrets.example.h` into your own local
 configuration and provide the required Wi-Fi and API credentials. The real
 configuration file is ignored by Git and must never be committed.
 
-For Todoist setup, see [TODOIST_SETUP.md](TODOIST_SETUP.md).
+For Todoist setup, see [Todoist sync setup](TODOIST_SETUP.md). For the complete
+first-boot and device workflow, see the [device guide](docs/DEVICE_GUIDE.md).
 
 ## Sync behavior
 
