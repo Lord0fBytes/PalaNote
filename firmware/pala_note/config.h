@@ -60,6 +60,8 @@
 #define NOTES_DIR  "/notes"
 #define INDEX_FILE "/notes/index.csv"
 #define TAG_FILE   "/notes/tags.txt"
+#define TAG_DEFAULTS_REV_FILE "/notes/tags.defaults"
+#define TAG_DEFAULTS_REVISION "2"
 #define MAX_TAGS   20
 
 /* UI timing */
@@ -76,7 +78,7 @@
 
 /* Time & firmware */
 #define LOCAL_TIME_OFFSET_MIN -480   // Pacific Standard Time (UTC-8). Washington observes UTC-7 during daylight saving time.
-#define FIRMWARE_VERSION       "v1.1.0"
-#define FW_VERSION             "v1.1.0"
+#define FIRMWARE_VERSION       "v1.1.1"
+#define FW_VERSION             "v1.1.1"
 
 #endif // CONFIG_H

@@ -4,7 +4,7 @@ Personal firmware workspace for the Pala Note ESP32-S3 e-paper voice recorder.
 The device records voice notes to an SD card, transcribes them through OpenAI,
 and provides an on-device note browser and local transfer portal.
 
-Current firmware version: **v1.1.0**
+Current firmware version: **v1.1.1**
 
 ## Features
 
@@ -59,9 +59,11 @@ When Sync is selected, the firmware:
 
 ## Development
 
-The `main` branch contains the current tested release. Release `v1.1.0` adds
-Todoist delivery, expanded sync diagnostics, Pacific-time configuration, and
-version display on the Settings and deep-sleep screens.
+The `main` branch contains the current tested release. Release `v1.1.1` adds a
+one-time migration for updated default tags while preserving custom tags.
+Release `v1.1.0` added Todoist delivery, expanded sync diagnostics,
+Pacific-time configuration, and version display on the Settings and deep-sleep
+screens.
 
 The community-maintained
 [Golden Nugget firmware](https://github.com/PalaGoldenNugget/firmware) may be
