@@ -111,11 +111,14 @@ to finish drawing before assuming a press was missed.
 5. Single-press REC to apply the displayed tag and save the note to the index.
    The current v1.1.2 flow then enters deep sleep.
 
-To discard the just-recorded note instead, long-press REC on **choose tag**.
-The **DISCARD** screen assigns the upper REC button to confirm and the lower
-power/menu button to cancel. Confirming removes the recording and returns to
-ready; cancelling returns to tag selection. A double or long REC press also
-cancels the confirmation.
+To discard the just-recorded note instead, follow the **hold REC: discard** cue
+on **choose tag**. Long-pressing REC opens the **DISCARD** screen, which assigns
+the upper REC button to confirm and the lower power/menu button to cancel.
+Confirming removes the WAV and any companion files, keeps the recording out of
+the note index, and returns to ready with the inactivity timer reset. The
+discarded recording will not appear in Notes, Sync, Transfer exports, or
+Todoist. Cancelling returns to tag selection; a double or long REC press also
+cancels the confirmation. Normal single-press tag saving is unchanged.
 
 If recording cannot create or write the WAV, the device displays **REC FAIL**,
 returns to ready, and does not add the note to its index.
