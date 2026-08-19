@@ -39,6 +39,7 @@ This rule takes priority over convenience, automation, broad requests to inspect
 - Apply the `bug` label to bug issues.
 - Apply the `minor` label to small, localized feature work and the `major` label to substantial or cross-cutting feature work.
 - Use only the label that best matches the issue under this scheme unless the user explicitly requests additional labels.
+- Treat `release-ready` as a workflow-status label rather than an additional classification label. Apply it only after successful device verification so open issues ready to ship are easy to identify.
 - Assign the issue to its target release milestone when that release is known; otherwise leave the milestone unset.
 - Include enough context, expected behavior, implementation notes, and acceptance criteria for the issue to be actionable without changing the user's intent.
 
@@ -92,6 +93,7 @@ When the user says `work on issue #N`, follow this checklist.
 ### After successful testing
 
 - Add an issue comment recording the successful device test and planned release.
+- Apply the `release-ready` label to the issue.
 - When the user confirms the issue work is complete, prepend `✅ ` to the current ChatGPT/Codex task title, for example `✅ [issue05] Sleep wake up menu`. Add the checkmark only once; do not add it while implementation or device verification is still pending.
 - Keep the issue open until the release is actually merged and published.
 - Continue collecting requested fixes on the milestone branch.
