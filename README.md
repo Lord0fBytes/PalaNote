@@ -12,7 +12,7 @@ Firmware version on this branch: **v1.1.2 (unreleased)**
 - 200 x 200 e-paper interface
 - Local WAV, transcript, metadata, and tag storage on SD card
 - OpenAI Whisper transcription during Sync
-- Todoist Inbox task delivery for newly transcribed notes
+- Todoist Inbox task delivery with `pala/` labels for newly transcribed notes
 - Local browser portal for browsing, filtering, downloading, and deleting notes
 - Audio playback, battery monitoring, RTC timestamps, and deep sleep
 - Detailed Serial Monitor diagnostics for Wi-Fi, transcription, and Todoist sync

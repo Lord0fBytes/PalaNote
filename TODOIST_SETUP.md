@@ -16,6 +16,19 @@ the device's **Sync** action runs.
 The local secrets file is ignored by Git. Do not place the real token in
 `secrets.example.h` or any committed source file.
 
+## Configure labels
+
+Todoist labels are controlled by two settings in `config.h`:
+
+```cpp
+#define TODOIST_LABELS_ENABLED 1
+#define TODOIST_LABEL_PREFIX   "pala"
+```
+
+Set `TODOIST_LABELS_ENABLED` to `0` to sync tasks without labels. Change
+`TODOIST_LABEL_PREFIX` to use another label namespace. The separator is added
+automatically, so a prefix of `pala` and a tag of `TODO` produce `pala/TODO`.
+
 ## Behavior
 
 - Sync first transcribes any pending recordings through OpenAI.
@@ -23,6 +36,9 @@ The local secrets file is ignored by Git. Do not place the real token in
 - The transcript's opening text is used as the task title.
 - The full transcript, Pala Note number, tag, and recording time are included
   in the task description.
+- When enabled, the note's current tag is also added as a Todoist label using
+  the configured prefix, such as `pala/TODO` or `pala/Idea`. Local tags remain
+  unchanged.
 - After Todoist confirms the task, the device writes a local `.todoist` marker
   beside the note. Future syncs skip notes with this marker.
 - If a request fails, no marker is written and the note is retried during the

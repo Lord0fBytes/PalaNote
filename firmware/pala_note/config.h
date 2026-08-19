@@ -64,6 +64,10 @@
 #define TAG_DEFAULTS_REVISION "2"
 #define MAX_TAGS   20
 
+/* Todoist labels */
+#define TODOIST_LABELS_ENABLED 1
+#define TODOIST_LABEL_PREFIX   "pala"
+
 /* UI timing */
 #define REC_HOLD_MS         350
 #define BTN_LONG_MS         600

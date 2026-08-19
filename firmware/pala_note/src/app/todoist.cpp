@@ -97,11 +97,22 @@ static bool createTodoistTask(const NoteEntry& note) {
   if (created.length() > 0) description += "\nRecorded: " + created;
   description += "\n\n" + transcript;
 
+  String labelsArg;
+#if TODOIST_LABELS_ENABLED
+  if (strlen(note.tag) > 0) {
+    String todoistLabel = String(TODOIST_LABEL_PREFIX);
+    todoistLabel.trim();
+    if (todoistLabel.length() > 0 && !todoistLabel.endsWith("/")) todoistLabel += "/";
+    todoistLabel += String(note.tag);
+    labelsArg = ",\"labels\":[\"" + jsonEscape(todoistLabel) + "\"]";
+  }
+#endif
+
   const String uuid = commandUuid(note.num);
   String command = "[{\"type\":\"item_add\",\"temp_id\":\"" + uuid +
                    "\",\"uuid\":\"" + uuid + "\",\"args\":{\"content\":\"" +
                    jsonEscape(title) + "\",\"description\":\"" +
-                   jsonEscape(description) + "\"}}]";
+                   jsonEscape(description) + "\"" + labelsArg + "}}]";
 
   WiFiClientSecure client;
   client.setInsecure();  // TODO: install or pin Todoist's CA certificate.
