@@ -4,7 +4,7 @@ Personal firmware workspace for the Pala Note ESP32-S3 e-paper voice recorder.
 The device records voice notes to an SD card, transcribes them through OpenAI,
 and provides an on-device note browser and local transfer portal.
 
-Firmware version on this branch: **v1.1.2 (unreleased)**
+Current firmware release: **v1.1.2**
 
 For setup, controls, recording, Sync, Transfer, storage, and troubleshooting,
 see the complete [Pala Note device guide](docs/DEVICE_GUIDE.md). Todoist-specific
@@ -64,9 +64,10 @@ When Sync is selected, the firmware:
 
 ## Development
 
-The `main` branch contains the current tested release, `v1.1.1`. The
-`hotfix-v1.1.2` branch collects device-tested fixes for the next patch release.
-Release `v1.1.1` added a
+The `main` branch contains the current tested release, `v1.1.2`. This release
+adds clearer physical-button action labels, recorded-note discard, scrolling
+recording tags, Todoist `pala/` labels, a short post-tag review period before
+sleep, and the complete device guide. Release `v1.1.1` added a
 one-time migration for updated default tags while preserving custom tags.
 Release `v1.1.0` added Todoist delivery, expanded sync diagnostics,
 Pacific-time configuration, and version display on the Settings and deep-sleep
