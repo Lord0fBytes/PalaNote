@@ -49,7 +49,7 @@ When the user says `work on issue #N`, follow this checklist.
 ### Review and scope
 
 - Read the GitHub issue, including its title, body, labels, milestone, comments, and current state.
-- Rename the current ChatGPT/Codex task by appending `[issueN] <issue title>` after loading the issue, for example `Pala Note [issue5] Sleep wake up menu`. Omit the issue title's redundant `[bug]` or `[feat]` prefix in the appended text.
+- Replace the current ChatGPT/Codex task title after loading the issue. Use `[issueNN] <issue title>`, with single-digit issue numbers zero-padded to two digits, for example `[issue05] Sleep wake up menu`. Omit the GitHub title's redundant `[bug]` or `[feat]` prefix.
 - Identify dependencies and related issues.
 - Confirm the expected behavior is sufficiently clear; ask before implementing when ambiguity would materially change the result.
 - Keep the work limited to the issue's stated intent.
