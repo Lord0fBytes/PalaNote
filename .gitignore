@@ -7,3 +7,6 @@
 *.map
 build/
 
+# Purchased project guide (keep local; do not redistribute)
+START HERE.pdf
+
