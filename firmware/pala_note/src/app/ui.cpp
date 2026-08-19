@@ -305,7 +305,7 @@ void showTagSelect(int cursor) {
     int y = y0 + i*(h+gap);
     drawModernPill(x, y, w, h, tags[i], i == cursor);
   }
-  drawStrC(W/2, 184, "hold REC to discard", 1, BLACK);
+  drawStrC(W/2, 184, "hold REC: discard", 1, BLACK);
   refresh();
 }
 
