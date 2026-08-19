@@ -111,7 +111,9 @@ to finish drawing before assuming a press was missed.
    briefly shows **saved** and its note number, then opens **choose tag**.
 4. Press the lower power/menu button to cycle through the available tags.
 5. Single-press REC to apply the displayed tag and save the note to the index.
-   The current v1.1.2 flow then enters deep sleep.
+   The device returns to **ready**, where another recording can begin or the
+   main menu can be opened. With no further input, the normal two-minute
+   inactivity timeout enters deep sleep.
 
 ### Discarding Notes
 
@@ -397,9 +399,6 @@ from a backup can cause tasks to be created again.
 - OpenAI retry handling uses three fixed-delay attempts and does not parse
   `Retry-After` or distinguish quota failures. Improvements are tracked in
   [issue #2](https://github.com/Lord0fBytes/PalaNote/issues/2).
-- Saving a tag currently puts the device directly to sleep. Returning to ready
-  for rapid consecutive notes is tracked in
-  [issue #7](https://github.com/Lord0fBytes/PalaNote/issues/7).
 - Transfer has no authentication or TLS. OpenAI and Todoist HTTPS clients also
   currently skip certificate validation.
 - The on-device timezone is a fixed UTC-8 offset and does not adjust for DST.
