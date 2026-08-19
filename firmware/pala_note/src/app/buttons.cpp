@@ -43,7 +43,6 @@ ButtonEvent readButtonEvent(int pin) {
     if (isDown(pin)) {
       delay(10);
       if (isDown(pin)) {
-        while (isDown(pin)) delay(3);
         resetActivity();
         return EV_DOUBLE;
       }
