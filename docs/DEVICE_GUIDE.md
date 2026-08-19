@@ -1,8 +1,10 @@
 # Pala Note device guide
 
-This guide describes the behavior of Pala Note firmware **v1.1.2**. It is a
-current-state guide: features discussed under [Known limitations](#known-limitations)
-are planned or incomplete and should not be mistaken for available behavior.
+**Version: 1.1.2**
+
+This is a current-state guide. Features discussed under
+[Known limitations](#known-limitations) are planned or incomplete and should
+not be mistaken for available behavior.
 
 ## Contents
 
