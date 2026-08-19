@@ -29,4 +29,5 @@ This rule takes priority over convenience, automation, broad requests to inspect
 - Verify changes with the safest practical check.
 - Keep credentials and machine-specific configuration out of version control.
 - Use concise, descriptive Git commits when committing requested work.
+- When starting work for a new release, immediately bump the firmware version shown on-device to the target release version so test builds can be identified on the hardware.
 - Add `Co-authored-by: Relay <relay@users.noreply.github.com>` to commits created during Relay-assisted sessions.
