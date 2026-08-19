@@ -113,11 +113,63 @@ void createDefaultTags() {
   saveTagsToFile();
 }
 
+static bool defaultTagsAreCurrent() {
+  File f = SD_MMC.open(TAG_DEFAULTS_REV_FILE);
+  if (!f) return false;
+  String revision = f.readStringUntil('\n');
+  revision.trim();
+  f.close();
+  return revision == TAG_DEFAULTS_REVISION;
+}
+
+static bool saveDefaultTagsRevision() {
+  if (SD_MMC.exists(TAG_DEFAULTS_REV_FILE)) SD_MMC.remove(TAG_DEFAULTS_REV_FILE);
+  File f = SD_MMC.open(TAG_DEFAULTS_REV_FILE, FILE_WRITE);
+  if (!f) return false;
+  f.println(TAG_DEFAULTS_REVISION);
+  f.close();
+  return true;
+}
+
+static void migrateDefaultTagsOnce() {
+  if (defaultTagsAreCurrent()) return;
+
+  int added = 0;
+  for (int d = 0; d < DEFAULT_TAG_COUNT && tagCount < MAX_TAGS; d++) {
+    bool exists = false;
+    for (int i = 0; i < tagCount; i++) {
+      if (strcasecmp(tags[i], DEFAULT_TAGS[d]) == 0) {
+        exists = true;
+        break;
+      }
+    }
+    if (exists) continue;
+    strncpy(tags[tagCount], DEFAULT_TAGS[d], 31);
+    tags[tagCount][31] = 0;
+    tagCount++;
+    added++;
+  }
+
+  if (added > 0) saveTagsToFile();
+  if (!saveDefaultTagsRevision()) {
+    Serial.println("[Tags] could not save defaults revision; migration will retry");
+  }
+  Serial.printf("[Tags] defaults migration: %d added, %d total\n", added, tagCount);
+}
+
 void loadTags() {
   tagCount = 0;
-  if (!SD_MMC.exists(TAG_FILE)) { createDefaultTags(); return; }
+  if (!SD_MMC.exists(TAG_FILE)) {
+    createDefaultTags();
+    migrateDefaultTagsOnce();
+    return;
+  }
   File f = SD_MMC.open(TAG_FILE);
-  if (!f) { createDefaultTags(); return; }
+  if (!f) {
+    createDefaultTags();
+    migrateDefaultTagsOnce();
+    return;
+  }
   while (f.available() && tagCount < MAX_TAGS) {
     String line = f.readStringUntil('\n'); line.trim();
     if (!line.length()) continue;
@@ -132,6 +184,7 @@ void loadTags() {
   }
   f.close();
   if (tagCount == 0) createDefaultTags();
+  migrateDefaultTagsOnce();
 }
 
 bool addCustomTag(const char* newTag) {
