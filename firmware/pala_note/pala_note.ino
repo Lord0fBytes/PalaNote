@@ -123,7 +123,7 @@ void startRecordFlow() {
   showSaved(lastRecNum);
   delay(900);
 
-  tagCursor = min(2, max(tagCount - 1, 0));
+  tagCursor = 0;
   state = STATE_TAG_SELECT;
   showTagSelect(tagCursor);
 }
