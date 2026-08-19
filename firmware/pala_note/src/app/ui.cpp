@@ -298,8 +298,8 @@ void showTagSelect(int cursor) {
     return;
   }
   drawKicker("choose tag", 17);
-  const int x = 36, w = 128, h = 21, gap = 7;
-  int y0 = 40;
+  const int x = 36, w = 128, h = 21, gap = 4;
+  int y0 = 38;
   cursor = constrain(cursor, 0, max(tagCount - 1, 0));
   for (int i=0; i<tagCount; i++) {
     int y = y0 + i*(h+gap);
