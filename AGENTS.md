@@ -31,3 +31,13 @@ This rule takes priority over convenience, automation, broad requests to inspect
 - Use concise, descriptive Git commits when committing requested work.
 - When starting work for a new release, immediately bump the firmware version shown on-device to the target release version so test builds can be identified on the hardware.
 - Add `Co-authored-by: Relay <relay@users.noreply.github.com>` to commits created during Relay-assisted sessions.
+
+## GitHub issue conventions
+
+- Prefix every new issue title with a lowercase type in brackets: `[bug]` for incorrect existing behavior or `[feat]` for new or expanded behavior.
+- Follow the prefix with a short, sentence-style description, for example `[bug] Sleep wake up menu` or `[feat] Add optional unattended daily sync`.
+- Apply the `bug` label to bug issues.
+- Apply the `minor` label to small, localized feature work and the `major` label to substantial or cross-cutting feature work.
+- Use only the label that best matches the issue under this scheme unless the user explicitly requests additional labels.
+- Assign the issue to its target release milestone when that release is known; otherwise leave the milestone unset.
+- Include enough context, expected behavior, implementation notes, and acceptance criteria for the issue to be actionable without changing the user's intent.
