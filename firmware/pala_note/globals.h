@@ -17,6 +17,7 @@ extern int       activeFilter;
 extern int       lastRecNum;
 
 extern uint32_t  lastActivityMs;
+extern uint32_t  inactivityTimeoutMs;
 extern bool      wokeFromUltraSleep;
 extern bool      wakeToMenuRequested;
 extern bool      wakeToRecRequested;

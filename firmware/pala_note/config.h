@@ -73,6 +73,7 @@
 #define BTN_LONG_MS         600
 #define DOUBLE_MS           200
 #define ULTRA_SLEEP_MS      120000UL
+#define POST_TAG_SLEEP_MS    15000UL
 #define TICKER_INTERVAL_MS  950
 
 /* Battery warning */

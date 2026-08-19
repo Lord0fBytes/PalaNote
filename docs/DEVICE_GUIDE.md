@@ -112,8 +112,9 @@ to finish drawing before assuming a press was missed.
 4. Press the lower power/menu button to cycle through the available tags.
 5. Single-press REC to apply the displayed tag and save the note to the index.
    The device returns to **ready**, where another recording can begin or the
-   main menu can be opened. With no further input, the normal two-minute
-   inactivity timeout enters deep sleep.
+   main menu can be opened. With no further input, it enters deep sleep after
+   15 seconds. Any recognized action restores the normal two-minute inactivity
+   timeout.
 
 ### Discarding Notes
 

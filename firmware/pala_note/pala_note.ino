@@ -67,6 +67,7 @@ int      activeFilter   = -1;
 int      lastRecNum     = -1;
 
 uint32_t lastActivityMs      = 0;
+uint32_t inactivityTimeoutMs = ULTRA_SLEEP_MS;
 bool     wokeFromUltraSleep  = false;
 bool     wakeToMenuRequested = false;
 bool     wakeToRecRequested  = false;
@@ -277,7 +278,7 @@ void setup() {
 void loop() {
 
   if (state != STATE_RECORDING && state != STATE_TRANSFER) {
-    if (millis() - lastActivityMs > ULTRA_SLEEP_MS) {
+    if (millis() - lastActivityMs > inactivityTimeoutMs) {
       enterUltraSleep();
       return;
     }
@@ -354,7 +355,7 @@ void loop() {
       soundSelect();
       saveTag(lastRecNum, tags[constrain(tagCursor, 0, max(tagCount - 1, 0))]);
       Serial.printf("[Rec] note #%03d tagged; returning to idle\n", lastRecNum);
-      resetActivity();
+      resetPostTagActivity();
       state = STATE_IDLE;
       showIdle();
     } else if (rec == EV_LONG) {
